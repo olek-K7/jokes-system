@@ -1,4 +1,4 @@
-package model;
+package app.dev.jokes_system.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,6 +30,8 @@ public class Joke {
     @Column(nullable = false)
     private int rating;
 
+    // Tells JPA to store and retrieve enum values using their names rather than numeric positions.
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private JokeCategory category;
 

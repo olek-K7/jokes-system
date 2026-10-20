@@ -1,8 +1,8 @@
-package repository;
+package app.dev.jokes_system.repository;
 
-import dto.JokeProjection;
-import model.Joke;
-import model.JokeCategory;
+import app.dev.jokes_system.dto.JokeProjection;
+import app.dev.jokes_system.model.Joke;
+import app.dev.jokes_system.model.JokeCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,7 +23,7 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
 
     // --- PROJECTIONS ---
     // Using JPQL
-    @Query("SELECT new dto.JokeProjection(j.setup, j.punchline) from Joke j")
+    @Query("SELECT new app.dev.jokes_system.dto.JokeProjection(j.setup, j.punchline) from Joke j")
     List<JokeProjection> findAllJokeProjections();
 
     // --- Aggregate ---

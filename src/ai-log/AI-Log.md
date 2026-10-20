@@ -52,3 +52,15 @@ Suggested changing pom.xml, application.properties configurations.
 
 What I did / accepted, rejected, or changed:
 Checked the suggested configurations but kept my original pom.xml and properties. The problem was resolved by reloading the Maven project in IntelliJ.
+
+2026-10-20 — ChatGPT — Spring Boot JPA: H2 Database Console
+Full prompt:
+While executing my code I encounter this error message:
+org.springframework.dao.DataIntegrityViolationException: Could not extract column [2] from JDBC ResultSet [Data conversion error converting "DAD" [22018-240]]
+I also attached my Joke.java implementation. Let me know what is missing.
+
+AI contribution:
+Explained that JPA was trying to read the category column value as a number instead of a string. Suggested adding @Enumerated(EnumType.STRING) to the category field.
+
+What I did / accepted, rejected, or changed:
+Added the annotation to Joke.java to match the string categories stored in the H2 database.
