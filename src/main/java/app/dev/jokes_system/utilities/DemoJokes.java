@@ -1,5 +1,6 @@
 package app.dev.jokes_system.utilities;
 
+import app.dev.jokes_system.service.JokeService;
 import lombok.extern.slf4j.Slf4j;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
@@ -13,15 +14,18 @@ import app.dev.jokes_system.repository.JokeRepository;
 @Profile("demo")
 public class DemoJokes implements CommandLineRunner {
     private final JokeRepository jokeRepository;
+    private final JokeService jokeService;
 
-    public DemoJokes(JokeRepository jokeRepository) {
+    public DemoJokes(JokeRepository jokeRepository, JokeService jokeService) {
         this.jokeRepository = jokeRepository;
+        this.jokeService = jokeService;
     }
 
     @Override
     public void run(String... args) {
 
         // Show all jokes
+        /*
         log.info("All jokes:");
         jokeRepository.findAll().forEach(joke -> log.info("{}", joke));
         log.info("Number of jokes: {}", jokeRepository.count());
@@ -44,7 +48,50 @@ public class DemoJokes implements CommandLineRunner {
 
         // Average rating
         log.info("Average rating: {}", jokeRepository.findAverageRating());
+*/
 
+        // Create a duplicate Joke
+        Joke duplicateJoke = new Joke(
+                "Why don't skeletons fight each other?",
+                "They don't have the guts.",
+                8,
+                4,
+                JokeCategory.DAD
+        );
+
+        try {
+            jokeService.addJoke(duplicateJoke);
+        }
+        catch (IllegalArgumentException e){
+            log.info("Duplicate joke rejected: {}", e.getMessage());
+        }
+
+        // Create a Joke with an incorrect category
+        Joke nullCategoryJoke = new Joke(
+                "What's the difference between a piano and a fish",
+                "You can tune a piano, but you can't tuna fish.",
+                8,
+                4,
+                null
+        );
+
+        // To avoid having application shut down
+        try{
+            jokeService.addJoke(nullCategoryJoke);
+        }
+        catch (IllegalArgumentException e){
+            log.info("Invalid category rejected: {}", e.getMessage());
+        }
+        // Create a new Joke
+        Joke newJoke = new Joke(
+                "What's the difference between a piano and a fish",
+                "You can tune a piano, but you can't tuna fish.",
+                8,
+                4,
+                JokeCategory.DAD
+        );
+        jokeService.addJoke(newJoke);
+        /*
         // Create a new Joke
         Joke newJoke = new Joke(
                 "What's the difference between a piano and a fish",
@@ -64,5 +111,7 @@ public class DemoJokes implements CommandLineRunner {
 //        jokeRepository.deleteById(id);
 //        log.info("Joke found after deletion: {}",
 //                jokeRepository.findById(id));
+         */
     }
+
 }

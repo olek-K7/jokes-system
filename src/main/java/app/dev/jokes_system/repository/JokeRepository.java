@@ -13,6 +13,10 @@ import java.util.List;
 // Create Read Delete
 public interface JokeRepository extends JpaRepository<Joke, Integer> {
 
+    // --- BUSINESS LOGIC ---
+    // Check if the same setup/punchline already exists
+    boolean existsBySetupAndPunchline(String setup, String punchline);
+
     // --- FILTERING ---
     // Filter all jokes from a given category
     List<Joke> findAllByCategory(JokeCategory category);

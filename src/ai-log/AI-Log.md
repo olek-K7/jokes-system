@@ -64,3 +64,14 @@ Explained that JPA was trying to read the category column value as a number inst
 
 What I did / accepted, rejected, or changed:
 Added the annotation to Joke.java to match the string categories stored in the H2 database.
+
+2026-10-26 — ChatGPT — Spring Boot: H2 Console and Security Issue
+
+Full Prompt:
+Take a look at my programs run output along with my pom.xml and identify why my H2 database isn't working or loading into memory. What could be causing this?
+
+AI contribution:
+Identified that spring-boot-starter-security was still active in pom.xml. Suggested commenting it out because Spring Security might be blocking access to the H2 console.
+
+What I did / accepted, rejected, or changed:
+Commented out the security dependency, reloaded Maven and restarted the application. Console started working again, so I kept this solution for now
