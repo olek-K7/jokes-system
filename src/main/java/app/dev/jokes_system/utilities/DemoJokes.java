@@ -123,11 +123,22 @@ public class DemoJokes implements CommandLineRunner {
                 4,
                 JokeCategory.DAD
         );
-        jokeService.addJoke(newJoke);
+        Joke savedJoke = jokeService.addJoke(newJoke);
+
+        // --- REMOVING BY ID ---
+        Integer id = savedJoke.getId();
+        log.info("Joke before removal: {}", jokeService.getJokeById(id));
+        jokeService.deleteJokeById(id);
+
+        try {
+            jokeService.getJokeById(id);
+        } catch (IllegalArgumentException e) {
+            log.info("After removal of the joke: {}", e.getMessage());
+        }
 
         // Get all jokes through the Service
         log.info("All jokes: ");
-        jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
+       // jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
 
         // Finding existing joke
         log.info("Joke number 4: ");
@@ -140,6 +151,24 @@ public class DemoJokes implements CommandLineRunner {
             log.info("Missing joke: {}", e.getMessage());
         }
 
+        // Show only setups and punchlines
+        log.info("Joke projections:");
+        jokeService.getAllJokeProjections()
+                .forEach(joke -> log.info("{} ==> {}", joke.setup(), joke.punchline()));
+
+        // --- FILTERING ---
+
+        // Filter by category
+        log.info("Coding jokes:");
+        jokeService.getJokesByCategory(JokeCategory.CODING).forEach(joke -> log.info("{}", joke));
+
+        // Filter by age
+        log.info("Jokes suitable for age 13:");
+        jokeService.getJokesByMinAge(13).forEach(joke -> log.info("{}", joke));
+
+        // Filter by rating
+        log.info("Jokes rated 4 or higner:");
+        jokeService.getJokesByRating(4).forEach(joke -> log.info("{}", joke));
         /*
         // Create a new Joke
         Joke newJoke = new Joke(

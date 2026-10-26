@@ -1,6 +1,8 @@
 package app.dev.jokes_system.service;
 
+import app.dev.jokes_system.dto.JokeProjection;
 import app.dev.jokes_system.model.Joke;
+import app.dev.jokes_system.model.JokeCategory;
 import app.dev.jokes_system.repository.JokeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -57,5 +59,33 @@ public class JokeService {
 
     }
 
+    // --- PROJECTIONS ---
+    public List<JokeProjection> getAllJokeProjections(){
+        return jokeRepository.findAllJokeProjections();
+    }
 
+    // --- FILTERING ---
+    // Filter jokes by category
+    public List<Joke> getJokesByCategory(JokeCategory category){
+        return jokeRepository.findAllByCategory(category);
+    }
+    // Filter jokes by minimum age
+    public List<Joke> getJokesByMinAge(int age) {
+        return jokeRepository.findAllByMinAgeLessThanEqual(age);
+    }
+    // Filter jokes by minimum rating
+    public List<Joke> getJokesByRating(int rating) {
+        return jokeRepository.findAllByRatingGreaterThanEqual(rating);
+    }
+
+    // Delete Joke by ID
+    @Transactional
+    public void deleteJokeById(Integer id) {
+
+        if (!jokeRepository.existsById(id)) {
+            throw new IllegalArgumentException("Joke does not exit: " + id);
+        }
+
+        jokeRepository.deleteById(id);
+    }
 }
