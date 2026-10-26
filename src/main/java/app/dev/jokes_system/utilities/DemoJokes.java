@@ -82,6 +82,39 @@ public class DemoJokes implements CommandLineRunner {
         catch (IllegalArgumentException e){
             log.info("Invalid category rejected: {}", e.getMessage());
         }
+
+        // Create a Joke with an incorrect rating
+        Joke invalidRating = new Joke(
+                "Why was the computer cold?",
+                "It left its Windows open.",
+                8,
+                99,
+                JokeCategory.CODING
+        );
+
+        try{
+            jokeService.addJoke(invalidRating);
+        }
+        catch (IllegalArgumentException e){
+            log.info("Invalid rating rejected: {}", e.getMessage());
+        }
+
+        // Create a Joke with an incorrect rating
+        Joke invalidAge = new Joke(
+                "Why did the programmer quit?",
+                "Because he didn't get arrays.",
+                -3,
+                4,
+                JokeCategory.CODING
+        );
+
+        try{
+            jokeService.addJoke(invalidRating);
+        }
+        catch (IllegalArgumentException e){
+            log.info("Invalid minimumAge rejected: {}", e.getMessage());
+        }
+
         // Create a new Joke
         Joke newJoke = new Joke(
                 "What's the difference between a piano and a fish",
@@ -91,6 +124,10 @@ public class DemoJokes implements CommandLineRunner {
                 JokeCategory.DAD
         );
         jokeService.addJoke(newJoke);
+
+        // Get all jokes through the Service
+        
+
         /*
         // Create a new Joke
         Joke newJoke = new Joke(
