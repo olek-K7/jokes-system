@@ -135,9 +135,21 @@ public class DemoJokes implements CommandLineRunner {
         } catch (IllegalArgumentException e) {
             log.info("After removal of the joke: {}", e.getMessage());
         }
+        // --- REMOVING BY CATEGORY ---
+        log.info("Science jokes before deletion:");
+        jokeService.getJokesByCategory(JokeCategory.SCIENCE)
+                .forEach(joke -> log.info("{}", joke));
+
+        int deleted = jokeService.deleteJokesByCategory(JokeCategory.SCIENCE);
+
+        log.info("Deleted {} science jokes", deleted);
+
+        log.info("Science jokes after deletion:");
+        jokeService.getJokesByCategory(JokeCategory.SCIENCE)
+                .forEach(joke -> log.info("{}", joke));
 
         // Get all jokes through the Service
-        log.info("All jokes: ");
+        // log.info("All jokes: ");
        // jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
 
         // Finding existing joke

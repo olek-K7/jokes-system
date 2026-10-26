@@ -4,7 +4,9 @@ import app.dev.jokes_system.dto.JokeProjection;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -30,8 +32,14 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
     @Query("SELECT new app.dev.jokes_system.dto.JokeProjection(j.setup, j.punchline) from Joke j")
     List<JokeProjection> findAllJokeProjections();
 
-    // --- Aggregate ---
+    // --- AGGREGATE ---
     // Using JPQL
     @Query("SELECT AVG(j.rating) from Joke j ")
     Double findAverageRating();
+
+    // --- DELETION ---
+    // Using my own delete, to use maximum efficiency
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM Joke j WHERE j.category = :category")
+    int deleteAllByCategory(@Param("category") JokeCategory category);
 }

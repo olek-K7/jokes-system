@@ -88,4 +88,13 @@ public class JokeService {
 
         jokeRepository.deleteById(id);
     }
+    // Delete Jokes by Category
+    // returns the number of removed jokes
+    @Transactional
+    public int deleteJokesByCategory(JokeCategory category){
+        if(category == null){
+            throw new IllegalArgumentException("Category is requiered for the deletion");
+        }
+        return jokeRepository.deleteAllByCategory(category);
+    }
 }
