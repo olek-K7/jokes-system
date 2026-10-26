@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JokeService {
@@ -44,9 +45,16 @@ public class JokeService {
         return jokeRepository.save(joke);
     }
 
-    @Transactional
     public List<Joke> getAllJokes(){
         return jokeRepository.findAll();
+    }
+
+    public Joke getJokeById(Integer id){
+        // findById returns Optional, as joke with that ID might not exist
+        // to keep Joke as a return type, I use orElseThrow() to throw an exception in case joke does not exist
+        return jokeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Joke not found: " + id));
+
     }
 
 

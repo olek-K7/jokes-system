@@ -126,7 +126,19 @@ public class DemoJokes implements CommandLineRunner {
         jokeService.addJoke(newJoke);
 
         // Get all jokes through the Service
-        
+        log.info("All jokes: ");
+        jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
+
+        // Finding existing joke
+        log.info("Joke number 4: ");
+        log.info("{}",jokeService.getJokeById(4));
+
+        // Finding a joke that doesn't exist
+        try {
+            jokeService.getJokeById(999);
+        } catch (IllegalArgumentException e){
+            log.info("Missing joke: {}", e.getMessage());
+        }
 
         /*
         // Create a new Joke

@@ -75,3 +75,17 @@ Identified that spring-boot-starter-security was still active in pom.xml. Sugges
 
 What I did / accepted, rejected, or changed:
 Commented out the security dependency, reloaded Maven and restarted the application. Console started working again, so I kept this solution for now
+
+2026-10-26 — ChatGPT — Spring Boot: H2 Console and Security Issue
+
+Full Prompt:
+What is the best way to keep Joke as a return type, instead of changing it to Optional<Joke> here:
+public Optional<Joke> getJokeById(Integer id) {
+return jokeRepository.findById(id);
+}
+
+AI contribution:
+Explained how .orElseThrow() allows the service method to return a Joke directly while handling missing records.
+
+What I did / accepted, rejected, or changed:
+Chose to use .orElseThrow() to handle IDs that do not exist
