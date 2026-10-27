@@ -19,6 +19,7 @@ public class JokeService {
         this.jokeRepository = jokeRepository;
     }
 
+    // --- ADD JOKE ---
     // Used for transactions that modify data
     @Transactional
     public Joke addJoke(Joke joke){
@@ -47,10 +48,13 @@ public class JokeService {
         return jokeRepository.save(joke);
     }
 
+    // --- RETRIEVAL ---
+    // Get all jokes
     public List<Joke> getAllJokes(){
         return jokeRepository.findAll();
     }
 
+    // Get joke by id
     public Joke getJokeById(Integer id){
         // findById returns Optional, as joke with that ID might not exist
         // to keep Joke as a return type, I use orElseThrow() to throw an exception in case joke does not exist
@@ -79,7 +83,7 @@ public class JokeService {
     }
 
     // --- DELETION ---
-    // Delete Joke by ID
+    // Delete joke by ID
     @Transactional
     public void deleteJokeById(Integer id) {
 
@@ -89,7 +93,7 @@ public class JokeService {
 
         jokeRepository.deleteById(id);
     }
-    // Delete Jokes by Category
+    // Delete jokes by Category
     // returns the number of removed jokes
     @Transactional
     public int deleteJokesByCategory(JokeCategory category){
@@ -99,7 +103,7 @@ public class JokeService {
         return jokeRepository.deleteAllByCategory(category);
     }
 
-    // --- PATCH ---
+    // --- PATCH/UPDATE ---
     // Update rating
     // Retrieving an entity inside Transaction, Hibernate manages it
     // When managable entity is changed, Hibernate detects it and updates DB
