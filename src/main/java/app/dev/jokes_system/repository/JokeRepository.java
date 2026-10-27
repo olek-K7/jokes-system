@@ -3,6 +3,7 @@ package app.dev.jokes_system.repository;
 import app.dev.jokes_system.dto.JokeProjection;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
+import app.dev.jokes_system.model.JokeLanguage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +27,8 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
     List<Joke> findAllByMinAgeLessThanEqual(int age);
     // To filter all jokes for a minimum rating
     List<Joke> findAllByRatingGreaterThanEqual(int rating);
+    // To filter all jokes by language
+    List<Joke> findAllByLanguage(JokeLanguage language);
 
     // --- PROJECTIONS ---
     // Using JPQL

@@ -89,3 +89,26 @@ Explained how .orElseThrow() allows the service method to return a Joke directly
 
 What I did / accepted, rejected, or changed:
 Chose to use .orElseThrow() to handle IDs that do not exist
+
+2026-10-27 — ChatGPT — Spring Boot: H2 Console and Security Issue
+
+Full Prompt:
+Generate 6 more jokes in the related style in spanish and fill the data.sql:
+INSERT INTO jokes (setup, punchline, min_age, category, rating)
+VALUES
+('Why don''t skeletons fight each other?', 'They don''t have the guts.', 6, 'DAD', 4, 'ENGLISH'),
+('Why did the scarecrow win an award?', 'Because he was outstanding in his field.', 6, 'DAD', 5, 'ENGLISH'),
+('Why don''t eggs tell jokes?', 'They''d crack each other up.', 5, 'DAD', 4, 'ENGLISH'),
+('Why can''t you trust atoms?', 'Because they make up everything.', 10, 'SCIENCE', 5, 'ENGLISH'),
+('What do you call an educated tube?', 'A graduated cylinder.', 12, 'SCIENCE', 4, 'ENGLISH'),
+('Why did the physicist break up with the biologist?', 'There was no chemistry.', 10, 'SCIENCE', 4, 'ENGLISH'),
+('Why do programmers prefer dark mode?', 'Because light attracts bugs.', 12, 'CODING', 5, 'ENGLISH'),
+('Why did the developer go broke?', 'Because he used up all his cache.', 13, 'CODING', 4, 'ENGLISH'),
+('How many programmers does it take to change a light bulb?', 'None. It''s a hardware problem.', 12, 'CODING', 5, 'ENGLISH');
+…
+
+AI contribution:
+Generated 6 more spanish jokes
+
+What I did / accepted, rejected, or changed:
+I checked the format of each Spanish joke entry and then added them into data.sql file 

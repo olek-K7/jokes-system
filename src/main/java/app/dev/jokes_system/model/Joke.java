@@ -35,13 +35,18 @@ public class Joke {
     @Column(nullable = false)
     private JokeCategory category;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private JokeLanguage language;
+
     // Constructor
-    public Joke(String setup, String punchline, int minAge, int rating, JokeCategory category){
+    public Joke(String setup, String punchline, int minAge, int rating, JokeCategory category, JokeLanguage language){
         this.setup = setup;
         this.punchline = punchline;
         this.minAge = minAge;
         this.rating = rating;
         this.category = category;
+        this.language = language;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package app.dev.jokes_system.utilities;
 
+import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.service.JokeService;
 import lombok.extern.slf4j.Slf4j;
 import app.dev.jokes_system.model.Joke;
@@ -76,13 +77,14 @@ public class DemoJokes implements CommandLineRunner {
         // --- ADD JOKE RULE TESTS ---
         log.info("--- ADD JOKE RULE TESTS ---");
 
-        // 1. Create a duplicate Joke
+        // 1.1. Create a duplicate Joke in English
         Joke duplicateJoke = new Joke(
                 "Why don't skeletons fight each other?",
                 "They don't have the guts.",
                 8,
                 4,
-                JokeCategory.DAD
+                JokeCategory.DAD,
+                JokeLanguage.ENGLISH
         );
 
         try {
@@ -91,6 +93,22 @@ public class DemoJokes implements CommandLineRunner {
         catch (IllegalArgumentException e){
             log.info("Duplicate joke rejected: {}", e.getMessage());
         }
+        // 1.2. Create a duplicate Joke in Spanish
+        Joke duplicateSpanishJoke = new Joke(
+                "¿Qué hace una vaca con los ojos cerrados?",
+                "Leche concentrada.",
+                5,
+                5,
+                JokeCategory.DAD,
+                JokeLanguage.SPANISH
+        );
+
+        try {
+            jokeService.addJoke(duplicateSpanishJoke);
+        }
+        catch (IllegalArgumentException e){
+            log.info("Duplicate spanish joke rejected: {}", e.getMessage());
+        }
 
         // 2. Create a Joke with an incorrect category
         Joke nullCategoryJoke = new Joke(
@@ -98,7 +116,8 @@ public class DemoJokes implements CommandLineRunner {
                 "You can tune a piano, but you can't tuna fish.",
                 8,
                 4,
-                null
+                null,
+                JokeLanguage.ENGLISH
         );
 
         // To avoid having application shut down -> try/catch
@@ -115,7 +134,8 @@ public class DemoJokes implements CommandLineRunner {
                 "It left its Windows open.",
                 8,
                 99,
-                JokeCategory.CODING
+                JokeCategory.CODING,
+                JokeLanguage.ENGLISH
         );
 
         try{
@@ -131,16 +151,33 @@ public class DemoJokes implements CommandLineRunner {
                 "Because he didn't get arrays.",
                 -3,
                 4,
-                JokeCategory.CODING
+                JokeCategory.CODING,
+                JokeLanguage.ENGLISH
         );
 
         try{
-            jokeService.addJoke(invalidRating);
+            jokeService.addJoke(invalidAge);
         }
         catch (IllegalArgumentException e){
             log.info("Invalid minimumAge rejected: {}", e.getMessage());
         }
 
+        // 5. Create a Joke with an incorrect language
+        Joke nullLanguageJoke = new Joke(
+                "What's the difference between a piano and a fish",
+                "You can tune a piano, but you can't tuna fish.",
+                8,
+                4,
+                JokeCategory.DAD,
+                null
+        );
+
+        try{
+            jokeService.addJoke(nullLanguageJoke);
+        }
+        catch (IllegalArgumentException e){
+            log.info("Invalid language rejected: {}", e.getMessage());
+        }
         // --- UPDATE TESTS---
         log.info("--- UPDATE TESTS ---");
         // 1. Valid patch
@@ -193,6 +230,32 @@ public class DemoJokes implements CommandLineRunner {
         // jokeService.getAllJokeProjections()
                 //.forEach(joke -> log.info("{} ==> {}", joke.setup(), joke.punchline()));
 
+        // --- FILTERING TESTS---
+        log.info("--- FILTERING TESTS ---");
+        // 1. Filter by category
+        log.info("Coding jokes:");
+        jokeService.getJokesByCategory(JokeCategory.CODING).forEach(joke -> log.info("{}", joke));
+
+        // 2. Filter by age
+        log.info("Jokes suitable for age 13:");
+        jokeService.getJokesByMinAge(13).forEach(joke -> log.info("{}", joke));
+
+        // 3. Filter by rating
+        log.info("Jokes rated 4 or higher:");
+        jokeService.getJokesByRating(4).forEach(joke -> log.info("{}", joke));
+
+        // 4. Filter by language
+        log.info("English jokes:");
+        jokeService.getJokesByLanguage(JokeLanguage.ENGLISH).forEach(joke -> log.info("Joke in english: {}", joke));
+
+        log.info("Spanish jokes:");
+        jokeService.getJokesByLanguage(JokeLanguage.SPANISH).forEach(joke -> log.info("Joke in spanish: {}", joke));
+
+        // 5, Filter jokes in spanish directly through repository
+        log.info("Spanish jokes from repository:");
+        jokeRepository.findAllByLanguage(JokeLanguage.SPANISH)
+                .forEach(joke -> log.info("{}", joke));
+
         // --- REMOVAL TESTS ---
         log.info("--- REMOVAL TESTS ---");
         // 1. Removing joke by id
@@ -201,7 +264,8 @@ public class DemoJokes implements CommandLineRunner {
                 "You can tune a piano, but you can't tuna fish.",
                 8,
                 4,
-                JokeCategory.DAD
+                JokeCategory.DAD,
+                JokeLanguage.ENGLISH
         );
         Joke savedJoke = jokeService.addJoke(newJoke);
 
@@ -228,19 +292,6 @@ public class DemoJokes implements CommandLineRunner {
         jokeService.getJokesByCategory(JokeCategory.SCIENCE)
                 .forEach(joke -> log.info("{}", joke));
 
-        // --- FILTERING TESTS---
-        log.info("--- FILTERING TESTS ---");
-        // 1. Filter by category
-        log.info("Coding jokes:");
-        jokeService.getJokesByCategory(JokeCategory.CODING).forEach(joke -> log.info("{}", joke));
-
-        // 2. Filter by age
-        log.info("Jokes suitable for age 13:");
-        jokeService.getJokesByMinAge(13).forEach(joke -> log.info("{}", joke));
-
-        // 3. Filter by rating
-        log.info("Jokes rated 4 or higher:");
-        jokeService.getJokesByRating(4).forEach(joke -> log.info("{}", joke));
     }
 
 }

@@ -3,6 +3,7 @@ package app.dev.jokes_system.service;
 import app.dev.jokes_system.dto.JokeProjection;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
+import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.repository.JokeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,11 @@ public class JokeService {
         // Check category
         // The only wrong value that might be is null, as we defined this attribute as enum, so Java restricts to these defined value
         if(joke.getCategory() == null){
-            throw new IllegalArgumentException("The category cannot be empty");
+            throw new IllegalArgumentException("The category field cannot be empty");
+        }
+        // Check language
+        if(joke.getLanguage() == null){
+            throw new IllegalArgumentException("The language field cannot be empty");
         }
 
         // Check joke's rating
@@ -81,6 +86,8 @@ public class JokeService {
     public List<Joke> getJokesByRating(int rating) {
         return jokeRepository.findAllByRatingGreaterThanEqual(rating);
     }
+    // Filter jokes by language
+    public List<Joke> getJokesByLanguage(JokeLanguage language){return jokeRepository.findAllByLanguage(language);}
 
     // --- DELETION ---
     // Delete joke by ID
