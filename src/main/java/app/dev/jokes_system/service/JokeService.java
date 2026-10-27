@@ -78,6 +78,7 @@ public class JokeService {
         return jokeRepository.findAllByRatingGreaterThanEqual(rating);
     }
 
+    // --- DELETION ---
     // Delete Joke by ID
     @Transactional
     public void deleteJokeById(Integer id) {
@@ -97,7 +98,9 @@ public class JokeService {
         }
         return jokeRepository.deleteAllByCategory(category);
     }
-    
+
+    // --- PATCH ---
+    // Update rating
     // Retrieving an entity inside Transaction, Hibernate manages it
     // When managable entity is changed, Hibernate detects it and updates DB
     @Transactional
@@ -113,4 +116,9 @@ public class JokeService {
         return joke;
     }
 
+    // --- AGGREGATION ---
+    // Service calls repository for the calculations, because it's doing it efficiently using JPQL's AVG()
+    public Double getAverageJokesRating(){
+        return jokeRepository.findAverageRating();
+    }
 }

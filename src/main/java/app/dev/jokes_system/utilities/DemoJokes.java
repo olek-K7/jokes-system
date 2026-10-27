@@ -115,8 +115,7 @@ public class DemoJokes implements CommandLineRunner {
             log.info("Invalid minimumAge rejected: {}", e.getMessage());
         }
 
-        // --- UPDATE JOKE'S RATING ---
-
+        // --- UPDATE JOKE'S RATING TESTS---
         // 1. Valid patch
         int newRating = 2;
         int jokeIdToUpdate = 1;
@@ -134,8 +133,11 @@ public class DemoJokes implements CommandLineRunner {
             log.info("Invalid rating update rejected: {}", e.getMessage());
         }
 
-        // --- REMOVING BY ID ---
-        // Create a new Joke
+        // --- GET AVERAGE RATING OF ALL JOKES ---
+        log.info("Average Jokes rating: {}", jokeService.getAverageJokesRating()) ;
+
+        // --- REMOVE JOKES TESTS ---
+        // 1. Removing by id
         Joke newJoke = new Joke(
                 "What's the difference between a piano and a fish",
                 "You can tune a piano, but you can't tuna fish.",
@@ -154,7 +156,7 @@ public class DemoJokes implements CommandLineRunner {
         } catch (IllegalArgumentException e) {
             log.info("After removal of the joke: {}", e.getMessage());
         }
-        // --- REMOVING BY CATEGORY ---
+        // 2. Removing by category
         log.info("Science jokes before deletion:");
         jokeService.getJokesByCategory(JokeCategory.SCIENCE)
                 .forEach(joke -> log.info("{}", joke));
