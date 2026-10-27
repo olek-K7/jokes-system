@@ -97,4 +97,20 @@ public class JokeService {
         }
         return jokeRepository.deleteAllByCategory(category);
     }
+    
+    // Retrieving an entity inside Transaction, Hibernate manages it
+    // When managable entity is changed, Hibernate detects it and updates DB
+    @Transactional
+    public Joke updateJokeRating(Integer id, int newRating){
+
+        if(newRating < 1 || newRating > 5){
+            throw new IllegalArgumentException("The joke's rating must be between 1 and 5");
+        }
+
+        Joke joke = getJokeById(id);
+        joke.setRating(newRating);
+
+        return joke;
+    }
+
 }

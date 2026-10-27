@@ -115,6 +115,26 @@ public class DemoJokes implements CommandLineRunner {
             log.info("Invalid minimumAge rejected: {}", e.getMessage());
         }
 
+        // --- UPDATE JOKE'S RATING ---
+
+        // 1. Valid patch
+        int newRating = 2;
+        int jokeIdToUpdate = 1;
+
+        Joke jokeToUpdate = jokeService.getJokeById(jokeIdToUpdate);
+        log.info("Previous joke {} rating: {}", jokeToUpdate.getId(), jokeToUpdate.getRating());
+
+        jokeService.updateJokeRating(jokeToUpdate.getId(),newRating);
+        log.info("Updated joke {} rating: {}", jokeService.getJokeById(jokeIdToUpdate).getId(), jokeService.getJokeById(jokeIdToUpdate).getRating());
+
+        // 2. Invalid patch
+        try {
+            jokeService.updateJokeRating(jokeIdToUpdate, 8);
+        } catch (IllegalArgumentException e) {
+            log.info("Invalid rating update rejected: {}", e.getMessage());
+        }
+
+        // --- REMOVING BY ID ---
         // Create a new Joke
         Joke newJoke = new Joke(
                 "What's the difference between a piano and a fish",
@@ -125,7 +145,6 @@ public class DemoJokes implements CommandLineRunner {
         );
         Joke savedJoke = jokeService.addJoke(newJoke);
 
-        // --- REMOVING BY ID ---
         Integer id = savedJoke.getId();
         log.info("Joke before removal: {}", jokeService.getJokeById(id));
         jokeService.deleteJokeById(id);
@@ -154,7 +173,12 @@ public class DemoJokes implements CommandLineRunner {
 
         // Finding existing joke
         log.info("Joke number 4: ");
-        log.info("{}",jokeService.getJokeById(4));
+
+        try {
+            log.info("{}",jokeService.getJokeById(4));
+        } catch (IllegalArgumentException e){
+            log.info("Missing joke: {}", e.getMessage());
+        }
 
         // Finding a joke that doesn't exist
         try {
