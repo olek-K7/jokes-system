@@ -205,8 +205,8 @@ public class DemoJokes implements CommandLineRunner {
         // --- RETRIEVAL TESTS ---
         log.info("--- RETRIEVAL TESTS ---");
         // 1. Get all jokes
-        // log.info("All jokes: ");
-        // jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
+        log.info("All jokes: ");
+        jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
 
         // 2. Finding existing joke
         log.info("Joke number 4: ");
@@ -224,11 +224,11 @@ public class DemoJokes implements CommandLineRunner {
         }
 
         // --- PROJECTION TESTS ---
-        // log.info("--- PROJECTION TESTS ---");
+         log.info("--- PROJECTION TESTS ---");
         // 1. Show only setups and punchlines
-        // log.info("Joke projections:");
-        // jokeService.getAllJokeProjections()
-                //.forEach(joke -> log.info("{} ==> {}", joke.setup(), joke.punchline()));
+        log.info("Joke projections:");
+        jokeService.getAllJokeProjections()
+                .forEach(joke -> log.info("{} ==> {}", joke.setup(), joke.punchline()));
 
         // --- FILTERING TESTS---
         log.info("--- FILTERING TESTS ---");
