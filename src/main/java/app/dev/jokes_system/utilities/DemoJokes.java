@@ -1,5 +1,6 @@
 package app.dev.jokes_system.utilities;
 
+import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.service.JokeService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import app.dev.jokes_system.repository.JokeRepository;
 
 @Slf4j
 @Component
-@Profile("demo")
+@Profile("demoJokes")
 public class DemoJokes implements CommandLineRunner {
     private final JokeRepository jokeRepository;
     private final JokeService jokeService;
@@ -73,7 +74,7 @@ public class DemoJokes implements CommandLineRunner {
          */
 
         // WEEK 7 TESTS using jokeService:
-
+        AppUser appUser = new AppUser("demoUser@gmail.com", "Demo", "user");
         // --- ADD JOKE RULE TESTS ---
         log.info("--- ADD JOKE RULE TESTS ---");
 
@@ -84,7 +85,8 @@ public class DemoJokes implements CommandLineRunner {
                 8,
                 4,
                 JokeCategory.DAD,
-                JokeLanguage.ENGLISH
+                JokeLanguage.ENGLISH,
+                appUser
         );
 
         try {
@@ -100,7 +102,8 @@ public class DemoJokes implements CommandLineRunner {
                 5,
                 5,
                 JokeCategory.DAD,
-                JokeLanguage.SPANISH
+                JokeLanguage.SPANISH,
+                appUser
         );
 
         try {
@@ -117,7 +120,8 @@ public class DemoJokes implements CommandLineRunner {
                 8,
                 4,
                 null,
-                JokeLanguage.ENGLISH
+                JokeLanguage.ENGLISH,
+                appUser
         );
 
         // To avoid having application shut down -> try/catch
@@ -135,7 +139,8 @@ public class DemoJokes implements CommandLineRunner {
                 8,
                 99,
                 JokeCategory.CODING,
-                JokeLanguage.ENGLISH
+                JokeLanguage.ENGLISH,
+                appUser
         );
 
         try{
@@ -152,7 +157,8 @@ public class DemoJokes implements CommandLineRunner {
                 -3,
                 4,
                 JokeCategory.CODING,
-                JokeLanguage.ENGLISH
+                JokeLanguage.ENGLISH,
+                appUser
         );
 
         try{
@@ -169,7 +175,8 @@ public class DemoJokes implements CommandLineRunner {
                 8,
                 4,
                 JokeCategory.DAD,
-                null
+                null,
+                appUser
         );
 
         try{
@@ -265,7 +272,8 @@ public class DemoJokes implements CommandLineRunner {
                 8,
                 4,
                 JokeCategory.DAD,
-                JokeLanguage.ENGLISH
+                JokeLanguage.ENGLISH,
+                appUser
         );
         Joke savedJoke = jokeService.addJoke(newJoke);
 

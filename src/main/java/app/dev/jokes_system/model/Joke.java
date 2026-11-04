@@ -39,14 +39,20 @@ public class Joke {
     @Column(nullable = false)
     private JokeLanguage language;
 
+    // Joke must belong to a User
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id") // Contains a FK, that is a PK of app_users table
+    private AppUser appUser;
+
     // Constructor
-    public Joke(String setup, String punchline, int minAge, int rating, JokeCategory category, JokeLanguage language){
+    public Joke(String setup, String punchline, int minAge, int rating, JokeCategory category, JokeLanguage language, AppUser appUser){
         this.setup = setup;
         this.punchline = punchline;
         this.minAge = minAge;
         this.rating = rating;
         this.category = category;
         this.language = language;
+        this.appUser = appUser;
     }
 
     @Override

@@ -29,6 +29,10 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
     List<Joke> findAllByRatingGreaterThanEqual(int rating);
     // To filter all jokes by language
     List<Joke> findAllByLanguage(JokeLanguage language);
+    // To find jokes belonging to a particular user
+    // AppUser - refers to the java AppUser entity contained with a Joke
+    // UserId - to the java field inside AppUser
+    List<Joke> findAllJokesByAppUser_UserId(Integer userId);
 
     // --- PROJECTIONS ---
     // Using JPQL
