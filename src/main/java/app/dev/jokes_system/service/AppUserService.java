@@ -3,6 +3,7 @@ package app.dev.jokes_system.service;
 import app.dev.jokes_system.dto.AppUserJokeCount;
 import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.repository.AppUserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,5 +24,15 @@ public class AppUserService {
     public AppUser getUserById(Integer id){return appUserRepository.findById(id).orElseThrow();}
     public List<AppUserJokeCount> getUserJokeCounts() {
         return appUserRepository.findAllUserJokeCounts();
+    }
+
+    // --- DELETION ---
+    // Delete user's account including their jokes
+    @Transactional
+    public void deleteUserById(Integer id){
+        if(!appUserRepository.existsById(id)){
+            throw new IllegalArgumentException("User does not exist: " + id);
+        }
+        appUserRepository.deleteById(id);
     }
 }

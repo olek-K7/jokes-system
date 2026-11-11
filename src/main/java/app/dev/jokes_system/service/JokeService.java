@@ -67,6 +67,9 @@ public class JokeService {
                 .orElseThrow(() -> new IllegalArgumentException("Joke not found: " + id));
 
     }
+    public List<Joke> getAllJokesByUserId(Integer id){
+        return jokeRepository.findAllJokesByAppUser_UserId(id);
+    }
 
     // --- PROJECTIONS ---
     public List<JokeProjection> getAllJokeProjections(){

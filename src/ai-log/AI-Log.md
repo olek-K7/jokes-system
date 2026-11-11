@@ -111,4 +111,13 @@ AI contribution:
 Generated 6 more spanish jokes
 
 What I did / accepted, rejected, or changed:
-I checked the format of each Spanish joke entry and then added them into data.sql file 
+I checked the format of each Spanish joke entry and then added them into data.sql file
+
+2026-11-04 — ChatGPT — Spring Boot
+
+Full Prompt:
+
+How can I construct a JPQL query using LEFT JOIN to retrieve all AppUsers with their email, first name, last name and number of jokes? I want to include users who have zero jokes and return the results as a DTO.
+
+What I did / accepted, rejected, or changed:
+I checked the recommended JPQL query and understood the way it functions, along with testing it.
