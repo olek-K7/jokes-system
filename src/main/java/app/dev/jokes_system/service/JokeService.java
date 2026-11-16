@@ -87,16 +87,16 @@ public class JokeService {
 
     // Previously I had List<Joke> -> Each Joke has AppUser and each AppUser has a list of jokes -> Potencial Jackson Serialization Exception
     // So instead we return List<JokeDto>
-    public List<JokeDto> getAllJokesByUserId(Integer id){
-        return jokeRepository.findAllJokesByAppUser_UserId(id)
+    public List<JokeDto> getJokesByUserId(Integer id){
+        return jokeRepository.findAllByAppUser_UserId(id)
                 .stream()
                 .map(JokeDto::fromEntity)
                 .toList();
     }
 
     // --- PROJECTIONS ---
-    public List<JokeProjection> getAllJokeProjections(){
-        return jokeRepository.findAllJokeProjections();
+    public List<JokeProjection> getJokeProjections(){
+        return jokeRepository.findAllProjections();
     }
 
     // --- FILTERING ---
@@ -108,7 +108,7 @@ public class JokeService {
                 .toList();
     }
     // Filter jokes by minimum age
-    public List<JokeProjection> getJokesByMinAge(int age) {
+    public List<JokeProjection> getJokesSuitableForAge(int age) {
         return jokeRepository.findAllByMinAgeLessThanEqual(age)
                 .stream()
                 .map(JokeProjection::from)

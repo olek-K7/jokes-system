@@ -54,7 +54,7 @@ public class DemoAppUsers implements CommandLineRunner {
                 ));
         // --- 4. GET ALL JOKES BELONGING TO USER 1 (DTO) ---
         log.info("Jokes belonging to user 1: ");
-        jokeService.getAllJokesByUserId(1)
+        jokeService.getJokesByUserId(1)
                 .forEach(joke -> log.info(
                         "Joke {}: {} ==> {}",
                         joke.getJokeId(), joke.getJokeSetup(), joke.getJokePunchline()));
@@ -67,7 +67,7 @@ public class DemoAppUsers implements CommandLineRunner {
         // --- 6. GET ALL JOKES SUITABLE FOR AGE 10
         int minAge = 10;
         log.info("TEST 6: GET ALL JOKES SUITABLE FOR AGE {}", minAge);
-        jokeService.getJokesByMinAge(minAge).forEach(jokeProjection -> log.info("Joke: {} -> {}", jokeProjection.setup(), jokeProjection.punchline()));
+        jokeService.getJokesSuitableForAge(minAge).forEach(jokeProjection -> log.info("Joke: {} -> {}", jokeProjection.setup(), jokeProjection.punchline()));
 
         // --- REMOVAL TESTS ---
         // --- REMOVING USER BY ID AND CHECK THEIR JOKES ---
@@ -76,7 +76,7 @@ public class DemoAppUsers implements CommandLineRunner {
             appUserService.deleteUserById(1);
 
             log.info("Accessing jokes of the user: {}", 1);
-            List<JokeDto> user1Jokes = jokeService.getAllJokesByUserId(1);
+            List<JokeDto> user1Jokes = jokeService.getJokesByUserId(1);
             log.info("The number of jokes: {}", user1Jokes.size());
 
         } catch (IllegalArgumentException e) {

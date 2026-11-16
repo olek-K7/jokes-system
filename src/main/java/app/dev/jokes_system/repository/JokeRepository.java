@@ -15,7 +15,6 @@ import java.util.List;
 // Generated implementation is configured by Spring into a bean called jokeRepository and creates several CRD operations
 // Create Read Delete
 public interface JokeRepository extends JpaRepository<Joke, Integer> {
-
     // --- BUSINESS LOGIC ---
     // Check if the same setup/punchline already exists
     boolean existsBySetupAndPunchline(String setup, String punchline);
@@ -32,12 +31,12 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
     // To find jokes belonging to a particular user
     // AppUser - refers to the java AppUser entity contained with a Joke
     // UserId - to the java field inside AppUser
-    List<Joke> findAllJokesByAppUser_UserId(Integer userId);
+    List<Joke> findAllByAppUser_UserId(Integer userId);
 
     // --- PROJECTIONS ---
     // Using JPQL
     @Query("SELECT new app.dev.jokes_system.dto.JokeProjection(j.setup, j.punchline) from Joke j")
-    List<JokeProjection> findAllJokeProjections();
+    List<JokeProjection> findAllProjections();
 
     // --- AGGREGATE ---
     // Using JPQL

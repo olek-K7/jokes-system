@@ -17,6 +17,6 @@ public class UserController {
     @Operation(description = "Finding all the jokes of a person")
     @GetMapping("users/{id}/jokes")
     List<JokeDto> getAllJokesByUserId(@PathVariable Integer id){
-        return jokeService.getAllJokesByUserId(id);
+        return jokeService.getJokesByUserId(id);
     }
 }

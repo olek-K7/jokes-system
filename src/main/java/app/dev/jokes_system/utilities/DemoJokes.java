@@ -234,7 +234,7 @@ public class DemoJokes implements CommandLineRunner {
          log.info("--- PROJECTION TESTS ---");
         // 1. Show only setups and punchlines
         log.info("Joke projections:");
-        jokeService.getAllJokeProjections()
+        jokeService.getJokeProjections()
                 .forEach(joke -> log.info("{} ==> {}", joke.setup(), joke.punchline()));
 
         // --- FILTERING TESTS---
@@ -245,7 +245,7 @@ public class DemoJokes implements CommandLineRunner {
 
         // 2. Filter by age
         log.info("Jokes suitable for age 13:");
-        jokeService.getJokesByMinAge(13).forEach(joke -> log.info("{}", joke));
+        jokeService.getJokesSuitableForAge(13).forEach(joke -> log.info("{}", joke));
 
         // 3. Filter by rating
         log.info("Jokes rated 4 or higher:");
