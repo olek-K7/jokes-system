@@ -59,6 +59,16 @@ public class DemoAppUsers implements CommandLineRunner {
                         "Joke {}: {} ==> {}",
                         joke.getJokeId(), joke.getJokeSetup(), joke.getJokePunchline()));
 
+        // --- 5. GET ALL JOKES WITH RATING GREATER OR EQUAL THEN 5
+        int minRating = 5;
+        log.info("TEST 5: GET ALL JOKES WITH RATING GREATER OR EQUAL THEN {}",minRating);
+        jokeService.getJokesByGreaterRating(minRating).forEach(jokeProjection -> log.info("Joke: {} -> {}", jokeProjection.setup(), jokeProjection.punchline()));
+
+        // --- 6. GET ALL JOKES SUITABLE FOR AGE 10
+        int minAge = 10;
+        log.info("TEST 6: GET ALL JOKES SUITABLE FOR AGE {}", minAge);
+        jokeService.getJokesByMinAge(minAge).forEach(jokeProjection -> log.info("Joke: {} -> {}", jokeProjection.setup(), jokeProjection.punchline()));
+
         // --- REMOVAL TESTS ---
         // --- REMOVING USER BY ID AND CHECK THEIR JOKES ---
         try {
