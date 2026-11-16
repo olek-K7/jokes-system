@@ -2,9 +2,11 @@ package app.dev.jokes_system.service;
 
 import app.dev.jokes_system.dto.JokeDto;
 import app.dev.jokes_system.dto.JokeProjection;
+import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
 import app.dev.jokes_system.model.JokeLanguage;
+import app.dev.jokes_system.repository.AppUserRepository;
 import app.dev.jokes_system.repository.JokeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -14,16 +16,25 @@ import java.util.List;
 @Service
 public class JokeService {
     private final JokeRepository jokeRepository;
-
+    private final AppUserService appUserService;
     // Constructor injection
-    public JokeService(JokeRepository jokeRepository){
+    public JokeService(JokeRepository jokeRepository, AppUserService appUserService){
         this.jokeRepository = jokeRepository;
+        this.appUserService = appUserService;
     }
 
     // --- ADD JOKE ---
     // Used for transactions that modify data
     @Transactional
     public Joke addJoke(Joke joke){
+
+        // Check if user was provided
+        if(joke.getAppUser() == null || joke.getAppUser().getUserId() == null){
+            throw new IllegalArgumentException("The user ID must be provided");
+        }
+        // AppUser retrieved from DB through JPA
+        AppUser appUser = appUserService.getUserById(joke.getAppUser().getUserId());
+        joke.setAppUser(appUser);
 
         // Check category
         // The only wrong value that might be is null, as we defined this attribute as enum, so Java restricts to these defined value
@@ -49,7 +60,6 @@ public class JokeService {
         if(jokeRepository.existsBySetupAndPunchline(joke.getSetup(),joke.getPunchline())){
             throw new IllegalArgumentException("This joke already exists");
         }
-
         return jokeRepository.save(joke);
     }
 

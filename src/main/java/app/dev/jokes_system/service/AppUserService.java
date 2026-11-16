@@ -21,7 +21,8 @@ public class AppUserService {
     // Retrieve all users
     public List<AppUser> getAllUsers(){return appUserRepository.findAll();}
     // Retrieve user by id
-    public AppUser getUserById(Integer id){return appUserRepository.findById(id).orElseThrow();}
+    public AppUser getUserById(Integer id){return appUserRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " does not exist"));}
+    // Retrieve user along with its number of jokes
     public List<AppUserJokeCount> getUserJokeCounts() {
         return appUserRepository.findAllUserJokeCounts();
     }

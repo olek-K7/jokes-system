@@ -1,6 +1,10 @@
 package app.dev.jokes_system.utilities;
 
 import app.dev.jokes_system.dto.JokeDto;
+import app.dev.jokes_system.model.AppUser;
+import app.dev.jokes_system.model.Joke;
+import app.dev.jokes_system.model.JokeCategory;
+import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.service.AppUserService;
 import app.dev.jokes_system.service.JokeService;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +59,8 @@ public class DemoAppUsers implements CommandLineRunner {
                         "Joke {}: {} ==> {}",
                         joke.getJokeId(), joke.getJokeSetup(), joke.getJokePunchline()));
 
-        // --- DELETE USER BY ID AND CHECK THEIR JOKES ---
+        // --- REMOVAL TESTS ---
+        // --- REMOVING USER BY ID AND CHECK THEIR JOKES ---
         try {
             log.info("Removing user with id: {}", 1);
             appUserService.deleteUserById(1);
@@ -66,6 +71,44 @@ public class DemoAppUsers implements CommandLineRunner {
 
         } catch (IllegalArgumentException e) {
             log.info("After removal of the user: {}", e.getMessage());
+        }
+
+        // --- ADD JOKE TESTS ---
+        // --- 1. ADD JOKE WITH NONEXISTENT USER ---
+        AppUser fakeUser = new AppUser();
+        fakeUser.setUserId(999);
+
+        Joke nonExistingUserJoke = new Joke("¿Qué le dice un techo a otro?",
+                "Techo de menos.",
+                1,
+                5,
+                JokeCategory.DAD,
+                JokeLanguage.SPANISH,
+                fakeUser
+                );
+        try {
+            log.info("TEST: ADDING JOKE WITH NONEXISTING USER");
+            jokeService.addJoke(nonExistingUserJoke);
+        }
+        catch (IllegalArgumentException e){
+            log.info("TEST PASSED: {}", e.getMessage());
+        }
+        // --- 2. ADD JOKE WITH EXISTING USER ---
+        AppUser realUser = appUserService.getUserById(2);
+        Joke existingUserJoke = new Joke("¿Qué le dice un techo a otro?",
+                "Techo de menos.",
+                1,
+                5,
+                JokeCategory.DAD,
+                JokeLanguage.SPANISH,
+                realUser
+        );
+        try {
+            log.info("TEST: ADDING JOKE TO AN EXISTING USER");
+            jokeService.addJoke(existingUserJoke);
+        }
+        catch (IllegalArgumentException e){
+            log.info("TEST DIDN'T PASS: {}", e.getMessage());
         }
     }
 }
