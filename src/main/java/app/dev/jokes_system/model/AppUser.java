@@ -35,6 +35,7 @@ public class AppUser{
     @ToString.Exclude
     // CascadeType.REMOVE - means if the User is deleted, also delete its jokes
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "appUser")
+    // @JSONIgnore
     private List<Joke> jokes;
 
     // Constructor

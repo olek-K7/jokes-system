@@ -1,6 +1,6 @@
 package app.dev.jokes_system.utilities;
 
-import app.dev.jokes_system.model.Joke;
+import app.dev.jokes_system.dto.JokeDto;
 import app.dev.jokes_system.service.AppUserService;
 import app.dev.jokes_system.service.JokeService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +26,8 @@ public class DemoAppUsers implements CommandLineRunner {
     public void run(String... args){
         log.info("--- WEEK 8: APP USER PROJECTIONS ---");
 
+        // --- RETRIEVAL TESTS ---
+        // --- 1. GET ALL USERS (EXCLUDING THEIR JOKES) ---
         appUserService.getAllUsers().forEach(user -> log.info(
                 "Retrieve all users(excluding their jokes): {} which is called {} {} with email {}",
                 user.getUserId(),
@@ -33,8 +35,11 @@ public class DemoAppUsers implements CommandLineRunner {
                 user.getLastname(),
                 user.getEmail()
                 ));
+
+        // --- 2. GET USER BY ID ---
         log.info("Retrieve by id: User {} which is called {} {}", appUserService.getUserById(1).getUserId(), appUserService.getUserById(1).getFirstname(), appUserService.getUserById(1).getLastname());
 
+        // --- 3. GET NUMBER OF JOKES PER USER (PROJECTION) ---
         appUserService.getUserJokeCounts()
                 .forEach(user -> log.info(
                         "User {} {} with email {} has {} jokes",
@@ -43,24 +48,24 @@ public class DemoAppUsers implements CommandLineRunner {
                         user.email(),
                         user.jokeCount()
                 ));
-
+        // --- 4. GET ALL JOKES BELONGING TO USER 1 (DTO) ---
         log.info("Jokes belonging to user 1: ");
         jokeService.getAllJokesByUserId(1)
                 .forEach(joke -> log.info(
                         "Joke {}: {} ==> {}",
-                        joke.getId(), joke.getSetup(), joke.getPunchline()));
+                        joke.getJokeId(), joke.getJokeSetup(), joke.getJokePunchline()));
 
+        // --- DELETE USER BY ID AND CHECK THEIR JOKES ---
         try {
             log.info("Removing user with id: {}", 1);
             appUserService.deleteUserById(1);
+
             log.info("Accessing jokes of the user: {}", 1);
-            List<Joke> user1Jokes = jokeService.getAllJokesByUserId(1);
-            log.info("The number of jokes: {}", user1Jokes.toArray().length);
+            List<JokeDto> user1Jokes = jokeService.getAllJokesByUserId(1);
+            log.info("The number of jokes: {}", user1Jokes.size());
 
         } catch (IllegalArgumentException e) {
             log.info("After removal of the user: {}", e.getMessage());
         }
-
-
     }
 }
