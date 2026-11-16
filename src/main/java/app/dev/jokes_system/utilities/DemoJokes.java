@@ -249,7 +249,7 @@ public class DemoJokes implements CommandLineRunner {
 
         // 3. Filter by rating
         log.info("Jokes rated 4 or higher:");
-        jokeService.getJokesByRating(4).forEach(joke -> log.info("{}", joke));
+        jokeService.getJokesByGreaterRating(4).forEach(joke -> log.info("{}", joke));
 
         // 4. Filter by language
         log.info("English jokes:");

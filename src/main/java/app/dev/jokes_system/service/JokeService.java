@@ -6,7 +6,6 @@ import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
 import app.dev.jokes_system.model.JokeLanguage;
-import app.dev.jokes_system.repository.AppUserRepository;
 import app.dev.jokes_system.repository.JokeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -109,26 +108,27 @@ public class JokeService {
                 .toList();
     }
     // Filter jokes by minimum age
-    public List<JokeDto> getJokesByMinAge(int age) {
+    public List<JokeProjection> getJokesByMinAge(int age) {
         return jokeRepository.findAllByMinAgeLessThanEqual(age)
                 .stream()
-                .map(JokeDto::fromEntity)
+                .map(JokeProjection::from)
                 .toList();
     }
     // Filter jokes by minimum rating
-    public List<JokeDto> getJokesByRating(int rating) {
+    public List<JokeProjection> getJokesByGreaterRating(int rating) {
         return jokeRepository.findAllByRatingGreaterThanEqual(rating)
                 .stream()
-                .map(JokeDto::fromEntity)
+                .map(JokeProjection::from)
                 .toList();
     }
     // Filter jokes by language
-    public List<JokeDto> getJokesByLanguage(JokeLanguage language) {
+    public List<JokeProjection> getJokesByLanguage(JokeLanguage language) {
         return jokeRepository.findAllByLanguage(language)
                 .stream()
-                .map(JokeDto::fromEntity)
+                .map(JokeProjection::from)
                 .toList();
     }
+
     // --- DELETION ---
     // Delete joke by ID
     @Transactional
