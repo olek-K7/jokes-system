@@ -2,6 +2,9 @@ package app.dev.jokes_system.service;
 
 import app.dev.jokes_system.dto.JokeDto;
 import app.dev.jokes_system.dto.JokeProjection;
+import app.dev.jokes_system.exceptions.BusinessRuleViolationException;
+import app.dev.jokes_system.exceptions.DuplicateJokeException;
+import app.dev.jokes_system.exceptions.JokeNotFoundException;
 import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
@@ -26,39 +29,40 @@ public class JokeService {
     // Used for transactions that modify data
     @Transactional
     public Joke addJoke(Joke joke){
-
-        // Check if user was provided
-        if(joke.getAppUser() == null || joke.getAppUser().getUserId() == null){
-            throw new IllegalArgumentException("The user ID must be provided");
-        }
-        // AppUser retrieved from DB through JPA
-        AppUser appUser = appUserService.getUserById(joke.getAppUser().getUserId());
-        joke.setAppUser(appUser);
-
         // Check category
         // The only wrong value that might be is null, as we defined this attribute as enum, so Java restricts to these defined value
         if(joke.getCategory() == null){
-            throw new IllegalArgumentException("The category field cannot be empty");
+            throw new BusinessRuleViolationException("The category field cannot be empty");
         }
         // Check language
         if(joke.getLanguage() == null){
-            throw new IllegalArgumentException("The language field cannot be empty");
+            throw new BusinessRuleViolationException("The language field cannot be empty");
         }
 
         // Check joke's rating
         if(joke.getRating() < 1 || joke.getRating() > 5){
-            throw new IllegalArgumentException("The joke's rating must be between 1 and 5");
+            throw new BusinessRuleViolationException("The joke's rating must be between 1 and 5");
         }
 
         // Check joke's minimumAge
         if(joke.getMinAge() < 0){
-            throw new IllegalArgumentException("Minimum age cannot be negative");
+            throw new BusinessRuleViolationException("Minimum age cannot be negative");
+        }
+
+        // Check if user was provided
+        if(joke.getAppUser() == null || joke.getAppUser().getUserId() == null){
+            throw new BusinessRuleViolationException("The user ID must be provided");
         }
 
         // Check duplicate joke
         if(jokeRepository.existsBySetupAndPunchline(joke.getSetup(),joke.getPunchline())){
-            throw new IllegalArgumentException("This joke already exists");
+            throw new DuplicateJokeException();
         }
+
+        // AppUser retrieved from DB through JPA
+        AppUser appUser = appUserService.getUserById(joke.getAppUser().getUserId());
+        joke.setAppUser(appUser);
+
         return jokeRepository.save(joke);
     }
 
@@ -77,7 +81,7 @@ public class JokeService {
         // findById returns Optional, as joke with that ID might not exist
         // to keep Joke as a return type, I use orElseThrow() to throw an exception in case joke does not exist
         return jokeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Joke not found: " + id));
+                .orElseThrow(() -> new JokeNotFoundException(id));
     }
     // 2. Returns JokeDto for API responses
     public JokeDto getJokeDtoById(Integer id){
@@ -135,7 +139,7 @@ public class JokeService {
     public void deleteJokeById(Integer id) {
 
         if (!jokeRepository.existsById(id)) {
-            throw new IllegalArgumentException("Joke does not exit: " + id);
+            throw new JokeNotFoundException(id);
         }
 
         jokeRepository.deleteById(id);
@@ -145,7 +149,7 @@ public class JokeService {
     @Transactional
     public int deleteJokesByCategory(JokeCategory category){
         if(category == null){
-            throw new IllegalArgumentException("Category is requiered for the deletion");
+            throw new BusinessRuleViolationException("Category is required for the removal");
         }
         return jokeRepository.deleteAllByCategory(category);
     }

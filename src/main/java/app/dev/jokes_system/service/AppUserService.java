@@ -1,6 +1,7 @@
 package app.dev.jokes_system.service;
 
 import app.dev.jokes_system.dto.AppUserJokeCount;
+import app.dev.jokes_system.exceptions.UserNotFoundException;
 import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.repository.AppUserRepository;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,8 @@ import java.util.List;
 
 @Service
 public class AppUserService {
+    // Forgot to add addUser method to check if email already exists
+
     AppUserRepository appUserRepository;
 
     public AppUserService(AppUserRepository appUserRepository)
@@ -21,7 +24,7 @@ public class AppUserService {
     // Retrieve all users
     public List<AppUser> getAllUsers(){return appUserRepository.findAll();}
     // Retrieve user by id
-    public AppUser getUserById(Integer id){return appUserRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " does not exist"));}
+    public AppUser getUserById(Integer id){return appUserRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));}
     // Retrieve user along with its number of jokes
     public List<AppUserJokeCount> getUserJokeCounts() {
         return appUserRepository.findAllUserJokeCounts();
@@ -32,7 +35,7 @@ public class AppUserService {
     @Transactional
     public void deleteUserById(Integer id){
         if(!appUserRepository.existsById(id)){
-            throw new IllegalArgumentException("User does not exist: " + id);
+            throw new UserNotFoundException(id);
         }
         appUserRepository.deleteById(id);
     }
