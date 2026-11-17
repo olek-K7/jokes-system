@@ -135,3 +135,14 @@ It suggested using one @GetMapping with optional @RequestParam values and a JPQL
 What I did / accepted, rejected, or changed:
 I accepted the suggested approach and replaced the separate filtering methods in JokeController with one GET method accepting optional parameters. I also added a JPQL query in JokeRepository.
 I tested changes through Swagger and confirmed that now I could retrieve all jokes and retrieve jokes with combined filter params.
+
+2026-11-17 — ChatGPT — Spring Boot REST API
+
+Full Prompt:
+Add valid date(can't be after today's date) to all my jokes entries: //data from data.sql
+
+AI contribution:
+Provided same data, including new date field values 
+
+What I did / accepted, rejected, or changed:
+Reviewed the dates added by AI and changed the entries inside data.sql

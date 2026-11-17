@@ -15,6 +15,7 @@ CREATE TABLE jokes ( id int PRIMARY KEY AUTO_INCREMENT,
                      language VARCHAR(50) NOT NULL,
 
                      user_id INT NOT NULL,
+                     date_added DATE NOT NULL,
                      -- Every joke must reference an existing user by its user_id
                      CONSTRAINT fk_jokes_user
                         FOREIGN KEY (user_id)

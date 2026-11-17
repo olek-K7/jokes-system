@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 // JpaRepository is created from Joke entity
@@ -26,6 +28,8 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
     List<Joke> findAllByMinAgeLessThanEqual(int age);
     // To filter all jokes for a minimum rating
     List<Joke> findAllByRatingGreaterThanEqual(int rating);
+    // Fo filter all jokes after a certain date
+    List<Joke> findAllByDateAddedGreaterThanEqual(LocalDate date);
     // To filter all jokes by language
     List<Joke> findAllByLanguage(JokeLanguage language);
     // To find jokes belonging to a particular user

@@ -8,6 +8,7 @@ import app.dev.jokes_system.service.JokeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -43,6 +44,11 @@ public class JokeController {
     @GetMapping("/average-rating")
     public Double getAverageJokeRating() {
         return jokeService.getAverageJokesRating();
+    }
+
+    @GetMapping("/added-after/{date}")
+    public List<JokeDto> getJokesAfterDate(@PathVariable LocalDate date){
+        return jokeService.getJokesAfterDate(date);
     }
 
     @DeleteMapping("/{id}")

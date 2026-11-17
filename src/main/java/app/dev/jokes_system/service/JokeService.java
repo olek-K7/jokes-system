@@ -13,6 +13,8 @@ import app.dev.jokes_system.repository.JokeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,6 +33,12 @@ public class JokeService {
     public Joke addJoke(Joke joke){
         // Check category
         // The only wrong value that might be is null, as we defined this attribute as enum, so Java restricts to these defined value
+
+        // A joke must have a date, and it cannot be added with the future date
+        if (joke.getDateAdded() == null ||
+                joke.getDateAdded().isAfter(LocalDate.now())) {
+            throw new BusinessRuleViolationException("The date must be provided and cannot be in the future");
+        }
         if(joke.getCategory() == null){
             throw new BusinessRuleViolationException("The category field cannot be empty");
         }
@@ -105,6 +113,7 @@ public class JokeService {
         return JokeDto.fromEntity(joke);
     }
 
+    // GET JOKE BY USER
     // Previously I had List<Joke> -> Each Joke has AppUser and each AppUser has a list of jokes -> Potencial Jackson Serialization Exception
     // So instead we return List<JokeDto>
     public List<JokeDto> getJokesByUserId(Integer id){
@@ -112,6 +121,11 @@ public class JokeService {
                 .stream()
                 .map(JokeDto::fromEntity)
                 .toList();
+    }
+
+    // GET ADDED JOKES AFTER DATE
+    public List<JokeDto> getJokesAfterDate(LocalDate date){
+        return jokeRepository.findAllByDateAddedGreaterThanEqual(date).stream().map(JokeDto::fromEntity).toList();
     }
 
     // --- PROJECTIONS ---

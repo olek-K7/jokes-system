@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +24,7 @@ public class JokeDto {
     private JokeCategory jokeCategory;
     private JokeLanguage jokeLanguage;
     private AppUserDto jokeAuthor;
+    private LocalDate dateAdded;
 
     // We create JokeDto and UserDto to avoid having a loop when Jackson maps Java into JSON
     // Convert Joke entity to JokeDto
@@ -34,7 +37,8 @@ public class JokeDto {
                 joke.getRating(),
                 joke.getCategory(),
                 joke.getLanguage(),
-                AppUserDto.fromEntity(joke.getAppUser())
+                AppUserDto.fromEntity(joke.getAppUser()),
+                joke.getDateAdded()
         );
     }
 }
