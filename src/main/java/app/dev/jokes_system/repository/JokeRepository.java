@@ -32,7 +32,21 @@ public interface JokeRepository extends JpaRepository<Joke, Integer> {
     // AppUser - refers to the java AppUser entity contained with a Joke
     // UserId - to the java field inside AppUser
     List<Joke> findAllByAppUser_UserId(Integer userId);
-
+    // To retrieve jokes using any combination of optional filters
+    @Query("""
+        SELECT j FROM Joke j
+        WHERE (:category IS NULL OR j.category = :category)
+            AND (:language IS NULL OR j.language = :language)
+            AND (:minimumAge IS NULL OR j.minAge <= :minimumAge)
+            AND (:minRating IS NULL OR j.rating >= :minRating)
+        """
+    )
+    List<Joke> findAllByFilters(
+            @Param("category") JokeCategory category,
+            @Param("language") JokeLanguage language,
+            @Param("minimumAge") Integer minimumAge,
+            @Param("minRating") Integer minRating
+    );
     // --- PROJECTIONS ---
     // Using JPQL
     @Query("SELECT new app.dev.jokes_system.dto.JokeProjection(j.setup, j.punchline) from Joke j")

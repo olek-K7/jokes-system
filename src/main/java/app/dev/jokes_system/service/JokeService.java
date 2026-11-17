@@ -67,14 +67,30 @@ public class JokeService {
     }
 
     // --- RETRIEVAL ---
-    // Get all jokes
-    public List<JokeDto> getAllJokes() {
+    // GET ALL JOKES
+    public List<JokeDto> getAllJokesByFilters() {
         return jokeRepository.findAll()
                 .stream()
                 .map(JokeDto::fromEntity)
                 .toList();
     }
+    // GET ALL JOKES MATCHING OPTIONAL FILTERS
+    public List<JokeDto> getAllJokesByFilters(
+            JokeCategory category,
+            JokeLanguage language,
+            Integer minimumAge,
+            Integer minimumRating) {
 
+        return jokeRepository.findAllByFilters(
+                        category,
+                        language,
+                        minimumAge,
+                        minimumRating
+                )
+                .stream()
+                .map(JokeDto::fromEntity)
+                .toList();
+    }
     // GET JOKE BY ID
     // 1. Returns a JPA entity managed by Hibernate for internal operations such as update
     public Joke getJokeById(Integer id){

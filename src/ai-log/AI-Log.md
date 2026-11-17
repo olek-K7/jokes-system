@@ -116,8 +116,22 @@ I checked the format of each Spanish joke entry and then added them into data.sq
 2026-11-04 — ChatGPT — Spring Boot
 
 Full Prompt:
-
 How can I construct a JPQL query using LEFT JOIN to retrieve all AppUsers with their email, first name, last name and number of jokes? I want to include users who have zero jokes and return the results as a DTO.
 
 What I did / accepted, rejected, or changed:
 I checked the recommended JPQL query and understood the way it functions, along with testing it.
+
+2026-11-17 — ChatGPT — Spring Boot REST API
+
+Full Prompt:
+i have an endpoint /api/jokes with 4 possible query parameters: category, language, ageRating and minimumRating. i created a separate @GetMapping method for each parameter inside my JokeController using params = "category" and so on.
+but now when i try to fetch all jokes through swagger without providing any parameters, it shows all 4 parameters as required. also why cant i combine multiple filters, for example category=DAD and language=SPANISH, in the same request?
+// I provided my JokeController code to AI
+
+AI contribution:
+Explained why multiple GET methods sharing the same endpoint cause problems with Swagger and could create ambiguous mappings with combined filters. 
+It suggested using one @GetMapping with optional @RequestParam values and a JPQL query to apply only the provided filters or to get directly all jokes.
+
+What I did / accepted, rejected, or changed:
+I accepted the suggested approach and replaced the separate filtering methods in JokeController with one GET method accepting optional parameters. I also added a JPQL query in JokeRepository.
+I tested changes through Swagger and confirmed that now I could retrieve all jokes and retrieve jokes with combined filter params.

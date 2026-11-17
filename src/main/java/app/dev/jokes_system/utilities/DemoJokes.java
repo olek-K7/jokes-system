@@ -213,7 +213,7 @@ public class DemoJokes implements CommandLineRunner {
         log.info("--- RETRIEVAL TESTS ---");
         // 1. Get all jokes
         log.info("All jokes: ");
-        jokeService.getAllJokes().forEach(joke -> log.info("{}",joke));
+        jokeService.getAllJokesByFilters().forEach(joke -> log.info("{}",joke));
 
         // 2. Finding existing joke
         log.info("Joke number 4: ");

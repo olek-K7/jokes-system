@@ -17,9 +17,17 @@ public class JokeController {
 
     private final JokeService jokeService;
 
-    @GetMapping
-    public List<JokeDto> getAllJokes() {
-        return jokeService.getAllJokes();
+    // GET /api/jokes --> GET ALL JOKES
+    // GET /api/jokes?category=DAD
+    // GET /api/jokes?category=DAD&minimumAge=12
+    @GetMapping()
+    public List<JokeDto> getJokes(
+            @RequestParam(required = false) JokeCategory category,
+            @RequestParam(required = false) JokeLanguage language,
+            @RequestParam(required = false) Integer minimumAge,
+            @RequestParam(required = false) Integer minRating
+    ) {
+        return jokeService.getAllJokesByFilters(category, language, minimumAge, minRating);
     }
 
     @GetMapping("/{id}")
@@ -35,30 +43,5 @@ public class JokeController {
     @GetMapping("/average-rating")
     public Double getAverageJokeRating() {
         return jokeService.getAverageJokesRating();
-    }
-
-    // GET /api/jokes?category=DAD --> params=category
-    @GetMapping(params = "category")
-    public List<JokeDto> getJokesByCategory(
-            @RequestParam JokeCategory category) {
-        return jokeService.getJokesByCategory(category);
-    }
-
-    @GetMapping(params = "ageRating")
-    public List<JokeProjection> getJokesSuitableForAge(
-            @RequestParam int ageRating) {
-        return jokeService.getJokesSuitableForAge(ageRating);
-    }
-
-    @GetMapping(params = "minimumRating")
-    public List<JokeProjection> getJokesWithMinimumRating(
-            @RequestParam int minimumRating) {
-        return jokeService.getJokesByGreaterRating(minimumRating);
-    }
-
-    @GetMapping(params = "language")
-    public List<JokeProjection> getJokesByLanguage(
-            @RequestParam JokeLanguage language) {
-        return jokeService.getJokesByLanguage(language);
     }
 }
