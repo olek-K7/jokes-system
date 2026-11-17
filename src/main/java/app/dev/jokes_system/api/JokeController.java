@@ -44,4 +44,14 @@ public class JokeController {
     public Double getAverageJokeRating() {
         return jokeService.getAverageJokesRating();
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteJokeById(@PathVariable Integer id){
+        jokeService.deleteJokeById(id);
+    }
+
+    @DeleteMapping(params = "category")
+    public void deleteJokesByCategory(JokeCategory category){
+        jokeService.deleteJokesByCategory(category);
+    }
 }

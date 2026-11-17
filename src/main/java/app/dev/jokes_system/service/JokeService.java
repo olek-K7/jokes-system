@@ -149,7 +149,7 @@ public class JokeService {
                 .toList();
     }
 
-    // --- DELETION ---
+    // --- REMOVAL ---
     // Delete joke by ID
     @Transactional
     public void deleteJokeById(Integer id) {
