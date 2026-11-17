@@ -1,6 +1,7 @@
 package app.dev.jokes_system.utilities;
 
 import app.dev.jokes_system.dto.JokeDto;
+import app.dev.jokes_system.exceptions.UserNotFoundException;
 import app.dev.jokes_system.model.AppUser;
 import app.dev.jokes_system.model.Joke;
 import app.dev.jokes_system.model.JokeCategory;
@@ -44,7 +45,7 @@ public class DemoAppUsers implements CommandLineRunner {
         log.info("Retrieve by id: User {} which is called {} {}", appUserService.getUserById(1).getUserId(), appUserService.getUserById(1).getFirstname(), appUserService.getUserById(1).getLastname());
 
         // --- 3. GET NUMBER OF JOKES PER USER (PROJECTION) ---
-        appUserService.getUserJokeCounts()
+        appUserService.getUsersJokeCounts()
                 .forEach(user -> log.info(
                         "User {} {} with email {} has {} jokes",
                         user.firstname(),
@@ -79,7 +80,7 @@ public class DemoAppUsers implements CommandLineRunner {
             List<JokeDto> user1Jokes = jokeService.getJokesByUserId(1);
             log.info("The number of jokes: {}", user1Jokes.size());
 
-        } catch (IllegalArgumentException e) {
+        } catch (UserNotFoundException e) {
             log.info("After removal of the user: {}", e.getMessage());
         }
 
@@ -100,7 +101,7 @@ public class DemoAppUsers implements CommandLineRunner {
             log.info("TEST: ADDING JOKE WITH NONEXISTING USER");
             jokeService.addJoke(nonExistingUserJoke);
         }
-        catch (IllegalArgumentException e){
+        catch (UserNotFoundException e){
             log.info("TEST PASSED: {}", e.getMessage());
         }
         // --- 2. ADD JOKE WITH EXISTING USER ---
@@ -117,7 +118,7 @@ public class DemoAppUsers implements CommandLineRunner {
             log.info("TEST: ADDING JOKE TO AN EXISTING USER");
             jokeService.addJoke(existingUserJoke);
         }
-        catch (IllegalArgumentException e){
+        catch (UserNotFoundException e){
             log.info("TEST DIDN'T PASS: {}", e.getMessage());
         }
     }

@@ -1,5 +1,6 @@
 package app.dev.jokes_system.service;
 
+import app.dev.jokes_system.dto.AppUserDto;
 import app.dev.jokes_system.dto.AppUserJokeCount;
 import app.dev.jokes_system.exceptions.UserNotFoundException;
 import app.dev.jokes_system.model.AppUser;
@@ -22,11 +23,18 @@ public class AppUserService {
 
     // --- RETRIEVAL ---
     // Retrieve all users
-    public List<AppUser> getAllUsers(){return appUserRepository.findAll();}
+    public List<AppUserDto> getAllUsers(){return appUserRepository.findAll().stream().map(AppUserDto::fromEntity).toList();}
     // Retrieve user by id
-    public AppUser getUserById(Integer id){return appUserRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));}
+    public AppUser getUserById(Integer id){
+        return appUserRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
+    // Convert into AppUserDto for API retrieval
+    public AppUserDto getUserDtoById(Integer id) {
+        AppUser user = getUserById(id);
+        return AppUserDto.fromEntity(user);
+    }
     // Retrieve user along with its number of jokes
-    public List<AppUserJokeCount> getUserJokeCounts() {
+    public List<AppUserJokeCount> getUsersJokeCounts() {
         return appUserRepository.findAllUserJokeCounts();
     }
 

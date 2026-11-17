@@ -13,13 +13,17 @@ import lombok.Setter;
 public class AppUserDto {
 
     private Integer userId;
-    private String username;
+    private String email;
+    private String firstname;
+    private String lastname;
 
     // Convert AppUser entity to AppUserDto
     public static AppUserDto fromEntity(AppUser user) {
         return new AppUserDto(
                 user.getUserId(),
-                user.getEmail()
+                user.getEmail(),
+                user.getFirstname(),
+                user.getLastname()
         );
     }
 }
