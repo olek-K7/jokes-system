@@ -97,6 +97,19 @@ public class JokeService {
         // Return a JokeDTO instead of the full Joke entity
         return JokeDto.fromEntity(savedJoke);
     }
+    // --- UPDATE JOKE ---
+    // 1. UPDATE JOKE'S RATING
+    public JokeDto updateJokeRating(Integer id, Integer newRating) {
+        Joke joke = jokeRepository.findById(id)
+                .orElseThrow(() -> new JokeNotFoundException(id));
+
+
+        joke.setRating(newRating);
+        Joke updatedJoke = jokeRepository.save(joke);
+
+        // Return JokeDto instead of a complete Joke object
+        return JokeDto.fromEntity(updatedJoke);
+    }
 
     // --- RETRIEVAL ---
     // GET ALL JOKES

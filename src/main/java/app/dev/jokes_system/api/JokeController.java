@@ -3,6 +3,7 @@ package app.dev.jokes_system.api;
 import app.dev.jokes_system.dto.JokeDto;
 import app.dev.jokes_system.dto.JokeProjection;
 import app.dev.jokes_system.dto.NewJokeRequest;
+import app.dev.jokes_system.dto.UpdateJokeRatingRequest;
 import app.dev.jokes_system.model.JokeCategory;
 import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.service.JokeService;
@@ -69,5 +70,14 @@ public class JokeController {
     @ResponseStatus(HttpStatus.CREATED)
     public JokeDto createJoke(@Valid @RequestBody NewJokeRequest request) {
         return jokeService.createJoke(request);
+    }
+
+    // PATCH /api/jokes/{id}/rating - CHANGE JOKE'S RATING
+    @PatchMapping("/{id}/rating")
+    public JokeDto updateJokeRating(
+            @PathVariable Integer id,
+            @Valid @RequestBody UpdateJokeRatingRequest request) {
+
+        return jokeService.updateJokeRating(id, request.rating());
     }
 }

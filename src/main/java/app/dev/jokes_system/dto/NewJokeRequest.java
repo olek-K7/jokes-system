@@ -40,9 +40,8 @@ public record NewJokeRequest(
         LocalDate dateAdded
 
 ) {
-
+    // add method to construct a completely new Joke object (for POST requsts)
     public static Joke toJoke(NewJokeRequest newJoke, AppUser appUser) {
-
         return new Joke(
                 newJoke.setup(),
                 newJoke.punchline(),
