@@ -2,6 +2,7 @@ package app.dev.jokes_system.service;
 
 import app.dev.jokes_system.dto.JokeDto;
 import app.dev.jokes_system.dto.JokeProjection;
+import app.dev.jokes_system.dto.NewJokeRequest;
 import app.dev.jokes_system.exceptions.BusinessRuleViolationException;
 import app.dev.jokes_system.exceptions.DuplicateJokeException;
 import app.dev.jokes_system.exceptions.JokeNotFoundException;
@@ -72,6 +73,29 @@ public class JokeService {
         joke.setAppUser(appUser);
 
         return jokeRepository.save(joke);
+    }
+
+    // --- CREATE JOKE ---
+    // Create a joke from the incoming request DTO
+    public JokeDto createJoke(NewJokeRequest request) {
+        AppUser appUser = appUserService.getUserById(request.userId());
+
+        // Convert the NewJokeRequest into Joke
+        Joke joke = new Joke(
+                request.setup(),
+                request.punchline(),
+                request.minAge(),
+                request.rating(),
+                request.category(),
+                request.language(),
+                appUser,
+                request.dateAdded()
+        );
+
+        Joke savedJoke = addJoke(joke);
+
+        // Return a JokeDTO instead of the full Joke entity
+        return JokeDto.fromEntity(savedJoke);
     }
 
     // --- RETRIEVAL ---

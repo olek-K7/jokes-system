@@ -2,10 +2,13 @@ package app.dev.jokes_system.api;
 
 import app.dev.jokes_system.dto.JokeDto;
 import app.dev.jokes_system.dto.JokeProjection;
+import app.dev.jokes_system.dto.NewJokeRequest;
 import app.dev.jokes_system.model.JokeCategory;
 import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.service.JokeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -59,5 +62,12 @@ public class JokeController {
     @DeleteMapping(params = "category")
     public void deleteJokesByCategory(JokeCategory category){
         jokeService.deleteJokesByCategory(category);
+    }
+
+    // POST /api/jokes - CREATE A NEW JOKE
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public JokeDto createJoke(@Valid @RequestBody NewJokeRequest request) {
+        return jokeService.createJoke(request);
     }
 }
