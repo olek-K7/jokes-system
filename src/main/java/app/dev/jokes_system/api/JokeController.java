@@ -61,6 +61,7 @@ public class JokeController {
     }
 
     @DeleteMapping(params = "category")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteJokesByCategory(JokeCategory category){
         jokeService.deleteJokesByCategory(category);
     }
