@@ -1,8 +1,8 @@
-INSERT INTO app_users (email, firstname, lastname)
+INSERT INTO app_users (email, firstname, lastname, password, role, locked)
 VALUES
-    ('oleksandr@jokes.com', 'Oleksandr', 'Kotik'),
-    ('john@jokes.com', 'John', 'Kennedy'),
-    ('peter@jokes.com', 'Peter', 'MacCollin');
+    ('oleksandr@jokes.com', 'Oleksandr', 'Kotik', '$2y$10$w3ZbVUdEigmY5Jk96E8iwe00O8MABPk02/J6YfTUCfhDR830GfSda', 'WRITER', FALSE),
+    ('john@jokes.com', 'John', 'Kennedy', '$2y$10$PJrt3fYQb4sgPdlWShmSa.X81SnG89G63ApOzbA0PEYncV6A2Dqtm', 'ADMIN', FALSE),
+    ('peter@jokes.com', 'Peter', 'MacCollin', '$2y$10$ZRsmirSBurDomYJClDfC1erDJnInP51cegpKGXRqwGkbOSO3IbmPS', 'WRITER', TRUE);
 
 INSERT INTO jokes
 (setup, punchline, min_age, category, rating, language, user_id, date_added)

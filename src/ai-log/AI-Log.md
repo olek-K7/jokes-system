@@ -146,3 +146,14 @@ Provided same data, including new date field values
 
 What I did / accepted, rejected, or changed:
 Reviewed the dates added by AI and changed the entries inside data.sql
+
+2026-11-24 — ChatGPT — Spring Boot REST API
+
+Full Prompt:
+Generate a BCrypt hashes, which support Spring Security's BcryptPasswordEncoder, for my test database entries 
+
+AI contribution:
+Provided Bcrypt hashes
+
+What I did / accepted, rejected, or changed:
+Acceptede the given hashed for my test data

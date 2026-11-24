@@ -30,6 +30,16 @@ public class AppUser{
     @Column(nullable = false)
     private String lastname;
 
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+
+    @Column(nullable = false)
+    private boolean locked;
+
     // Lombok annotation to exclude this field from toString method
     // Including it could cause recursion or bcs of an issue with lazy data access
     @ToString.Exclude
@@ -39,9 +49,12 @@ public class AppUser{
     private List<Joke> jokes;
 
     // Constructor
-    public AppUser(String email, String firstname, String lastname){
+    public AppUser(String email, String firstname, String lastname, String password, UserRole role, boolean locked){
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.password = password;
+        this.role = role;
+        this.locked = locked;
     }
 }
