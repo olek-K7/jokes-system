@@ -42,22 +42,37 @@ public class SecurityConfig {
                                 PathRequest.toH2Console()
                         ).permitAll()
 
-                        // Anyone is allowed to read jokes
-                        .requestMatchers(
-                                HttpMethod.GET, "/api/jokes/**", "/api/jokes"
-                        ).permitAll()
-
-                        // Only ADMIN can access user endpoints
-                        .requestMatchers(
-                                "/api/users", "/api/users/**"
-                        ).hasRole("ADMIN")
-
                         // Actuator requires authentication
                         .requestMatchers(
                                 "/actuator/**"
                         ).authenticated()
 
-                        // POST, PATCH, DELETE require any type of authentication (doesn't matter the role yet)
+                        // Anyone is allowed to read jokes
+                        .requestMatchers(
+                                HttpMethod.GET, "/api/jokes/**", "/api/jokes"
+                        ).permitAll()
+
+                        // Users can be managed only by ADMIN
+                        .requestMatchers(
+                                 "/api/users", "/api/users/**"
+                        ).hasRole("ADMIN")
+
+                        // Jokes can be deleted only by ADMIN
+                        .requestMatchers(
+                                HttpMethod.DELETE, "/api/jokes", "/api/jokes/**"
+                        ).hasRole("ADMIN")
+
+                        // Joke can be created by ADMIN or writer
+                        .requestMatchers(
+                                HttpMethod.POST, "/api/jokes", "/api/jokes/**"
+                        ).hasAnyRole("ADMIN", "WRITER")
+
+                        // Jokes can be updated by ADMIN or WRITER
+                        .requestMatchers(
+                                HttpMethod.PATCH, "/api/jokes/**"
+                        ).hasAnyRole("ADMIN", "WRITER")
+
+                        // Other requests must at least be authenticated
                         .anyRequest().authenticated()
                 )
                 //  Frames should be shown without authentication but only if they come from the same origin
