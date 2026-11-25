@@ -12,12 +12,15 @@ import app.dev.jokes_system.model.JokeCategory;
 import app.dev.jokes_system.model.JokeLanguage;
 import app.dev.jokes_system.repository.JokeRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+@EnableMethodSecurity
 @Service
 public class JokeService {
     private final JokeRepository jokeRepository;
@@ -77,6 +80,7 @@ public class JokeService {
 
     // --- CREATE JOKE ---
     // Create a joke from the incoming request DTO
+    @PreAuthorize("hasAnyRole('ADMIN','WRITER')")
     public JokeDto createJoke(NewJokeRequest request) {
         AppUser appUser = appUserService.getUserById(request.userId());
 
@@ -97,8 +101,12 @@ public class JokeService {
         // Return a JokeDTO instead of the full Joke entity
         return JokeDto.fromEntity(savedJoke);
     }
-    // --- UPDATE JOKE ---
-    // 1. UPDATE JOKE'S RATING
+
+    // --- PATCH/UPDATE ---
+    // 1. Update rating
+    // Retrieving an entity inside Transaction, Hibernate manages it
+    // When managable entity is changed, Hibernate detects it and updates DB
+    @PreAuthorize("hasAnyRole('ADMIN','WRITER')")
     public JokeDto updateJokeRating(Integer id, Integer newRating) {
         Joke joke = jokeRepository.findById(id)
                 .orElseThrow(() -> new JokeNotFoundException(id));
@@ -112,13 +120,6 @@ public class JokeService {
     }
 
     // --- RETRIEVAL ---
-    // GET ALL JOKES
-    public List<JokeDto> getAllJokesByFilters() {
-        return jokeRepository.findAll()
-                .stream()
-                .map(JokeDto::fromEntity)
-                .toList();
-    }
     // GET ALL JOKES MATCHING OPTIONAL FILTERS
     public List<JokeDto> getAllJokesByFilters(
             JokeCategory category,
@@ -202,6 +203,7 @@ public class JokeService {
 
     // --- REMOVAL ---
     // Delete joke by ID
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public void deleteJokeById(Integer id) {
 
@@ -213,28 +215,13 @@ public class JokeService {
     }
     // Delete jokes by Category
     // returns the number of removed jokes
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public int deleteJokesByCategory(JokeCategory category){
         if(category == null){
             throw new BusinessRuleViolationException("Category is required for the removal");
         }
         return jokeRepository.deleteAllByCategory(category);
-    }
-
-    // --- PATCH/UPDATE ---
-    // Update rating
-    // Retrieving an entity inside Transaction, Hibernate manages it
-    // When managable entity is changed, Hibernate detects it and updates DB
-    @Transactional
-    public void updateJokeRating(Integer id, int newRating){
-
-        if(newRating < 1 || newRating > 5){
-            throw new IllegalArgumentException("The joke's rating must be between 1 and 5");
-        }
-
-        Joke joke = getJokeById(id);
-        joke.setRating(newRating);
-
     }
 
     // --- AGGREGATION ---
